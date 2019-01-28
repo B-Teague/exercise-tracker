@@ -1,88 +1,80 @@
-const exerciseLog = require('../models/ExerciseLog');
-const exerciseUser = require('../models/ExerciseUser');
+'use strict';
+const dbConnect = require('../datastore/dbConnect');
+const MC = require('./modelController');
 
-exports.CREATE_USER = function(req, res, next) {
-    
-  //Create a new exerciseUser model
-  const newUser = new exerciseUser(req.body);
-  // Save the new model instance, passing a callback
-  newUser.save(function (err) {
-
-    if (err) { 
-      if(err.code === 11000) {
-        next({status: 400, message: "username already taken"});
-      } else {
-        next({status: 500, message: "Error inserting username: " + err.message});
-      }
+exports.CREATE_USER = async function(req, res, next) {
+  try {
+    const db = await dbConnect.getDb();
+    const [error, data] = MC.validate(
+      req.body,
+      MC.EXERCISE_USER);
+    if(error){
+      next(error);
     } else {
-      res.json({username: newUser.username, _id: newUser._id});
+      const result = await db.collection('exerciseusers').insertOne(
+        data, {returnNewDocument: true});
+      res.json(result.ops[0]);
     }
-  });
-};
-
-exports.CREATE_LOG = function(req, res, next) {
-  //Create a new log model
-  if(req.body.date === "") {req.body.date = " "; }
-  const newLog = new exerciseLog(req.body);
-  
-  exerciseUser.findById(
-    req.body.userId, 
-    function(err, user){
-      if(err){
-        next({status: 500, message: "Something wrong when updating data!" + err.message});
-      } else {
-
-        user.Log.push(newLog);
-        user.save(function (err, updatedUser) {
-
-          if (err) { 
-             next({status: 500, message: "Error updating username: " + err.message});
-          } else {
-            res.json(updatedUser);
-          }
-        });
-      }
-  });
-  
-};
-
-exports.GET_LOG = function(req, res, next) {
-  //Map query parameters to a exercise Model to perform validation
-  //before calling the query finder
-  const fromDate = (req.query.from) ? new Date(req.query.from) : new Date('1970-01-01');
-  const toDate = (req.query.to) ? new Date(req.query.to) : new Date('9999-12-31');
-  const limit = (req.query.limit) ? req.query.limit : 999;
-  
-  exerciseUser.findById({
-    _id: req.query.userId
-  } ).
-  //limit(req.query.limit).
-  //sort({ date: 1 }).
-  exec(function(err, doc){
-    if(err){
-        res.send("Something wrong when updating data!" + err.message)  
-    }
-    if(doc){
-      doc.Log = doc.Log.filter( (log) => {
-        return log.date >= fromDate && log.date <= toDate;
-      });
-      doc.Log = doc.Log.slice(0, limit);
-      res.json(doc);
+  }
+  catch (err){
+    if(err.code === 11000) {
+      next({status: 400, message: "username already taken"});
     } else {
-      next({status: 400, message: "unknown userId"});
+      next(err);
     }
-  });
+  }
 };
 
-exports.GET_USERS = function(req, res) {
-  //Map query parameters to a exercise Model to perform validation
-  //before calling the query finder
+exports.CREATE_LOG = async function(req, res, next) {
   
-  exerciseUser.find({}).
-  exec(function(err, doc){
-    if(err){
-        res.send("Something wrong when updating data!" + err.message)  
+  try{
+    const db = await dbConnect.getDb();
+    const [error, data] = MC.validate(req.body, MC.EXERCISE_LOG);
+    if(error){
+      next(error);
+    } else {
+      const result = await db.collection('exerciselogs').insertOne(
+        data, {returnNewDocument: true});
+      res.json(result.ops[0]);
     }
-    res.send(doc);
-  });
+  } catch (err) {
+    next(err);
+  }
+  
+};
+
+exports.GET_LOG = async function(req, res, next) {
+  
+  try{
+    const db = await dbConnect.getDb();
+    const [error, data] = MC.validate(req.query, MC.EXERCISE_SEARCH);
+    if(error){
+      next(error)
+    } else {
+      const cursor = await db.collection('exerciselogs')
+      .find({
+        userId: data.userId,
+        $and: [
+          { date: { $gte: data.from } },
+          { date: { $lte: data.to } }
+        ]
+      })
+      .limit(data.limit);
+      res.json(await cursor.toArray());
+    }
+  } catch (err) {
+    next(err);
+  }
+  
+};
+
+exports.GET_USERS = async function(req, res, next) {
+  try{
+    const db = await dbConnect.getDb();
+    const cursor = await db.collection('exerciseusers').find({});
+    const users = await cursor.toArray();
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
 };

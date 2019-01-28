@@ -1,64 +1,70 @@
-
-* {
-  box-sizing: border-box;
-}
-
 body {
-  font-family:sans-serif;
-  margin: 25px;
-  color: #222;
-  background-color: #f5f5f5;
+  font-family: 'Itim', sans-serif;
+  font-size: 1.25em;
+  margin: 25px 15px;
+  background-color: #7686AF;
 }
 
-h1 {
-  font-weight: bold;
-  
-}
-
-.bold {
-  font-weight: bold;
-}
-
-p {
-  max-width: 900px;
-}
-
-form {
-  margin-bottom: 25px;
+header {
+  text-align: center;
+  background-image: linear-gradient(to bottom right, #FFFFFF, #AEF2E3);
+  border-radius: 10px;
+  margin-bottom: 0px;
   padding: 15px;
-  background-color: #87D37C;
-  display: inline-block;
-  width: 100%;
-  max-width: 340px;
-  border-radius: 5px;
+  font-size: 1.5em;
+  box-shadow: 5px 5px 10px 0px rgba(0,0,0,1);
 }
 
-input {
+section {
+  background-image: linear-gradient(to bottom right, #FFFFFF, #ABCDEF);
+  padding: 10px 20px;
+  margin: 20px 0px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px 0px rgba(0,0,0,1);
+}
+
+label{
   display: block;
-  margin-bottom: 10px;
-  padding: 5px;
+}
+
+input{
+  font-family: 'Itim', sans-serif;
+  font-size: 1em;
+  border-radius: 10px;
+  display: block;
+  cursor: initial;
+  margin: 10px 0px;
+  box-sizing: border-box;
   width: 100%;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  font-size: 16px;
+  padding: 5px;
 }
 
-input[type=submit] {
-  font-size: 16px;
-  border-radius: 3px;
-  background-color: #E4F1FE;
-  border: 1px solid grey;
-  box-shadow: 2px 2px #999;
-  cursor: pointer;
+button{
+  font-family: 'Itim', sans-serif;
+  font-size: 1.25em;
+  display: block;
+  background-image: linear-gradient(#FFFFFF, #AAAAAA);
+  border-radius: 999px;
+  border: none;
+  padding: 5px 10px;
 }
 
-input[type=submit]:hover {
-  background-color: #FFFEC4;
+h2 {
+ margin: 10px 0px; 
 }
 
-code {
-  font-family: monospace;
-  font-size: 1.2em;
-  background-color: #FFFEC4;
-  padding: 2px;
+p, code {
+  padding-left: 40px;
+  display: block;
+  word-wrap: break-word;
+}
+
+article {
+  margin: 0px auto;
+}
+
+@media only screen and (orientation: landscape) {
+  article {
+    max-width: 750px;
+  }
 }

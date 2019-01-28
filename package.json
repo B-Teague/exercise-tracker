@@ -8,14 +8,16 @@
   },
   "dependencies": {
     "express": "^4.14.0",
-    "mongodb": "^2.2.14",
+    "mongodb": "^3.1.10",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "shortid": "^2.2.6",
-    "mongoose": "^5.2.7"
+    "ajv": "^6.7.0",
+    "ajv-keywords": "^3.3.0",
+    "date-fns": "^1.30.1"
   },
   "engines": {
-    "node": "6.9.1"
+    "node": "10.9.0"
   },
   "repository": {
     "url": "https://gomix.com/#!/project/welcome-project"

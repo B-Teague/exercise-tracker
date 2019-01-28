@@ -1,0 +1,29 @@
+{
+  "allOf": [
+    {
+      "dynamicDefaults": {
+         "_id": "shortid"
+      }
+    },
+    {
+      "$id": "./ExerciseUser.schema.json",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ExerciseUser",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["username"],
+
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "Generated unique identifier."
+        },
+        "username": {
+          "type": "string",
+          "description": "Username picked by the individual.",
+          "minLength": 1
+        }
+      }
+    }
+  ]
+}

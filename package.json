@@ -1,7 +1,7 @@
 {
-  "name": "fcc-exercise-tracker",
-  "version": "0.1.0",
-  "description": "A REST API project, part of Free Code Camp's curriculum",
+  "name": "teague-apis-exercise-tracker",
+  "version": "1.0.0",
+  "description": "A microservice API that creates new users, logs excerise sessions and provides a search filter of the exercise logs for a given user id.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -19,13 +19,10 @@
   "engines": {
     "node": "10.9.0"
   },
-  "repository": {
-    "url": "https://gomix.com/#!/project/welcome-project"
-  },
+  "repository": "github:B-Teague/exercise-tracker",
   "license": "MIT",
   "keywords": [
     "node",
-    "gomix",
     "express"
   ]
 }
